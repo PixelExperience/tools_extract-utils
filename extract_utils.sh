@@ -367,7 +367,11 @@ function write_blueprint_packages() {
         BASENAME=$(basename "$FILE")
         DIRNAME=$(dirname "$FILE")
         EXTENSION=${BASENAME##*.}
-        PKGNAME=${BASENAME%.*}
+        if [ "$CLASS" = "EXECUTABLES" ] && [ "$EXTENSION" != "sh" ]; then
+            PKGNAME=${BASENAME}
+        else
+            PKGNAME=${BASENAME%.*}
+        fi
 
         # Add to final package list
         PACKAGE_LIST+=("$PKGNAME")
@@ -567,7 +571,11 @@ function write_makefile_packages() {
         elif [ "$EXTENSION" = ".apk" ]; then
                 EXTENSION="\$(COMMON_ANDROID_PACKAGE_SUFFIX)"
         fi
-        PKGNAME=${BASENAME%.*}
+        if [ "$CLASS" = "EXECUTABLES" ] && [ "$EXTENSION" != "sh" ]; then
+            PKGNAME=${BASENAME}
+        else
+            PKGNAME=${BASENAME%.*}
+        fi
 
         # Add to final package list
         PACKAGE_LIST+=("$PKGNAME")
